@@ -1,14 +1,14 @@
-#library(downloader)
+library(downloader)
 library(data.table)
 library(plyr)
 library(dplyr)
-getwd()
-#setwd("C:\\Ihsan\\Eday_R\\download")
+
+setwd("C:\\Eday\\Doc\\R\\download")
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+#download(fileUrl, dest="UCI HAR dataset.zip",mode = "wb")
+download.file(fileUrl, dest="UCI HAR dataset.zip",mode = "wb",method="curl") 
 
-download.file(fileUrl, destfile = "UCI HAR dataset.zip",mode = "wb") #,method='curl') 
-
-
+#download()
 unzip ("UCI HAR dataset.zip")
 
 activitylabels <- read.table("UCI HAR Dataset/activity_labels.txt",sep="",na.strings=TRUE,stringsAsFactors=FALSE,col.names = c('activity_label','activity'),header = FALSE)
@@ -47,4 +47,5 @@ DT <- as.data.table(testtrainfinal)
 resultset <- DT[ , lapply(.SD, mean), by = list(subject,activity)]
 finalresult <- as.data.frame(arrange(resultset,subject,activity))
 write.table(finalresult,file="run_analysis_results.txt",sep=",",row.names = FALSE,col.names = FALSE)
-#################### End of program #################################
+class(finalresult)
+head(finalresult,5)
